@@ -1,0 +1,22 @@
+The Mifflin - St Jeor BMR equation is as follows:
+
+Metric formula for men
+BMR = (10 × weight in kg) + (6.25 × height in cm) − (5 × age in years) + 5
+
+Imperial formula for men
+BMR = (4.536 × weight in pounds) + (15.88 × height in inches) − (5 × age) + 5
+
+Metric formula for women
+BMR = (10 × weight in kg) + (6.25 × height in cm) − (5 × age in years) − 161
+
+Imperial formula for women
+BMR = (4.536 × weight in pounds) + (15.88 × height in inches) − (5 × age) − 161;
+
+
+{"Height-ft":"","Height-in":"","Height-cm":"160","Weight-lb":""
+            ,"Weight-kg":"50","Age":"20","Unit":"Metric","Activity Level":"Lightly Active",
+             "Gender":"Male","Goal":"Maintain"}
+
+{"Height-ft":"","Height-in":"","Height-cm":"160","Weight-lb":""
+            ,"Weight-kg":"50","Age":"20","Unit":"Metric","Activity Level":"Lightly Active",
+             "Gender":"Male","Goal":"Maintain"}
