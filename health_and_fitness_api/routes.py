@@ -1,7 +1,9 @@
 from . import app, db
 import re
 from flask import request, session, jsonify
-from cryptography.fernet import Fernet
+import string
+import random
+ 
 
 @app.endpoint('signup')
 def user_signup():
@@ -14,6 +16,7 @@ def user_signup():
     session['age'] = session['data']["age"]
     session['password'] = session['data']["password"]
     session['active'] = False
+    session['rand-key'] = str(''.join(random.choices(string.ascii_lowercase + string.digits, k=20)))
 
     if not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', session['mail-id']):
         return jsonify(message='Please enter valid email')
@@ -32,7 +35,7 @@ def user_signup():
 
 
     users = db.users
-    users.insert_one({"first-name": session['first-name'], "last-name": session['last-name'], "gender": session['gender'],"mail-id": session['mail-id'], "password" :session['password'], "age": session['age'],"phone-number": session['phone-number']})
+    users.insert_one({"first-name": session['first-name'], "last-name": session['last-name'], "gender": session['gender'],"mail-id": session['mail-id'], "password" :session['password'], "age": session['age'],"phone-number": session['phone-number'], "active" : session['active'], "rand-key" : session['rand-key']})
 
     return jsonify(message="Congratulations! You are one step closer to unlocking\
                     the full potential of your account. We have sent a verification\
