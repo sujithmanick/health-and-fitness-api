@@ -5,6 +5,29 @@ import string
 import random
  
 
+def pswd_check(passwd):
+     
+    SpecialSym =['$', '@', '#', '%']
+    if len(passwd) < 6:
+        return 'length should be at least 6'
+         
+    if len(passwd) > 20:
+        return 'length should be not be greater than 8'
+         
+    if not any(char.isdigit() for char in passwd):
+        return 'Password should have at least one numeral'
+         
+    if not any(char.isupper() for char in passwd):
+        return 'Password should have at least one uppercase letter'
+         
+    if not any(char.islower() for char in passwd):
+        return 'Password should have at least one lowercase letter'
+         
+    if not any(char in SpecialSym for char in passwd):
+        return 'Password should have at least one of the symbols $@#'
+    
+    return True
+
 @app.endpoint('signup')
 def user_signup():
     session['data'] = request.get_json()
@@ -21,8 +44,9 @@ def user_signup():
     if not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', session['mail-id']):
         return jsonify(message='Please enter valid email')
     
-    """if not re.match(r'^[A-Za-z\d!@#$%^&*]{8,}$', session['password']):
-        return jsonify(message='Your password doesn\'t match system requerments')"""
+    password_check = pswd_check(session['password'])
+    if password_check != True:
+        return jsonify(message=password_check)
     
     if not re.match(r'[A-za-z]{2,}', session['first-name']):
         return jsonify(message='Your first-name doesn\'t match system requerments')
