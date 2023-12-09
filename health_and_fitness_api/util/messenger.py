@@ -9,9 +9,8 @@ def send_verification_email(app,name,email,link):
         sender_pass = app.config['MAIL_SENDER_PASSWORD']
         sender = app.config['MAIL_SENDER_ADDRESS']
         targets = email
-        msg = MIMEText(f'Hi {name}\n\n Use this link to activate your\
-                       health-and-fittness-account\n {link}')
-        msg['Subject'] = 'Account verification | health-and-fittness-api'
+        msg = MIMEText(f'Hi {name}\n\n Use this link to activate your health-and-fittness-account\n\n {link}')
+        msg['Subject'] = 'New account verification | health-and-fittness-api'
         msg['From'] = sender
         msg['To'] = email
 
