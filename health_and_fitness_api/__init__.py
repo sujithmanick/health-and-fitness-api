@@ -3,14 +3,17 @@ from pymongo import MongoClient
 import os
 import json
 from cryptography.fernet import Fernet
+import logging
 
 app = None
 db = None
+log = None
 
 def create_app():
     global app
     global db
-
+    global log
+    
     with open('config.json', mode='r') as config_file:
         config_data = json.load(config_file)
 
@@ -30,14 +33,29 @@ def create_app():
         DEBUG = config_data['DEBUG']
 
     app = Flask(__name__)
-    app.config.from_object(Base_config)  
+    log = logging.getLogger('health_and_fitness_api')
+    logging.basicConfig(filemode='haf_log.log',encoding='utf-8',level=config_data['LOGLEVEL'],format=config_data['LOGGER_FORMAT'])
+    try:
+        app.config.from_object(Base_config)
+        log.info('App settings configured')  
+    except:
+        log.error('App config failed')
 
-    client = MongoClient(app.config['MONGO_DATABASE_URI'])
-    db = client.health_and_fitness_api
 
+    try:
+        client = MongoClient(app.config['MONGO_DATABASE_URI'])
+        db = client.health_and_fitness_api
+        if db != None: 
+            log.info('DB settings configured') 
+        else:
+            log.error('DB connection failed')
+    except:
+        log.error('DB connection failed')
 
-    from . import urls, routes
+    try:
+        from . import urls, routes
+        log.info('Imported endpoints')
+    except ImportError:
+        log.error('Imported endpoints failed')
 
-    return app                                           
-
-create_app()
+    return app

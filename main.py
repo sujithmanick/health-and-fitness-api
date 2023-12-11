@@ -1,10 +1,10 @@
 from waitress import serve
 
-from health_and_fitness_api import app
-from health_and_fitness_api import routes, urls
+from health_and_fitness_api import create_app
+#from health_and_fitness_api import routes, urls
 
 if __name__ == '__main__':
-    app.run()
+    create_app().run()
     #serve(app, host='127.0.0.1', port=8080)
 
 #Command to run

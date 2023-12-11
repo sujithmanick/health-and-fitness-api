@@ -1,4 +1,4 @@
-from . import app
+from . import app, log
 from flask import request, session, jsonify
 from passlib.hash import sha256_crypt
 import string
@@ -121,13 +121,19 @@ def get_diet_plans(current_user):
     session["diet"] = request.args.get("diet")
     print(session)
     diet_plans_scrab_url = f'https://www.prospre.io/meal-plans?cals={session["calories"]}&p={session["protein"]}&f={session["fat"]}&c={session["carbs"]}&diet={session["diet"]}'
-    print(diet_plans_scrab_url)
+    
     return jsonify(message=diet_plan_scraper(diet_plans_scrab_url)),200
 
 @token_required
 def calculate_cal(current_user):
+    session['cal_data'] = request.get_json()
+    session["user"] = current_user['mail_id']
+    session['gender'] = session['cal_data']['gender']
+    session['weight_type'] = session['cal_data']['weight_type']
+    session['weight'] = session['cal_data']['weight']
+    session['height'] = session['cal_data']['height']
+    session['age'] = session['cal_data']['age']
 
-    session['']
     """Metric formula for men
     BMR = (10 × weight in kg) + (6.25 × height in cm) − (5 × age in years) + 5
 
@@ -139,4 +145,25 @@ def calculate_cal(current_user):
 
     Imperial formula for women
     BMR = (4.536 × weight in pounds) + (15.88 × height in inches) − (5 × age) − 161;"""
-    pass
+
+    if session['gender'] == 'men':
+        if session['weight_type'] == 'metric':
+            session['bmr'] = (10 * session['weight']) + (6.25 * float(session['height'])) - (5 * int(session['age'])) + 5
+        elif session['weight_type'] == 'imperial':
+            session['bmr'] = (4.536 * session['weight']) + (15.88 * float(session['height'])) - (5 * int(session['age'])) + 5
+        else:
+            log.debug(f'Error, {session["user"]} has entred weight_type as {session["weight_type"]} in calculate_cal')
+            return jsonify(message='The weight_type entred was invalid'),401
+    elif session['gender'] == 'women':
+        if session['weight_type'] == 'metric':
+            session['bmr'] = (10 * session['weight']) + (6.25 * float(session['height'])) - (5 * int(session['age'])) - 161
+        elif session['weight_type'] == 'imperial':
+            session['bmr'] = (4.536 * session['weight']) + (15.88 * float(session['height'])) - (5 * int(session['age'])) - 161
+        else:
+            log.debug(f'Error, {session["user"]} has entred weight_type as {session["weight_type"]} in calculate_cal')
+            return jsonify(message='The weight_type entred was invalid'),401
+    else:
+        log.debug(f'Error, {session["user"]} has entred gender as {session["gender"]} in calculate_cal')
+        return jsonify(message='The gender entred was invalid'),401
+    
+    return jsonify(bmr=session['bmr'],calculated_time=datetime.now()),200
