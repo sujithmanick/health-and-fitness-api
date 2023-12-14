@@ -32,9 +32,7 @@ def token_required(f):
         try:
             data = jwt.decode(token, key=app.config['JWT_SECRET'],options=jwt_options,algorithms=['HS256', ])
             current_user = users_db.find_one({"mail_id": data['mail_id']})
-            print('logged in user :'+str(current_user['mail_id']))
         except Exception as e:
-            print(e)
             return (jsonify({'Message': 'Token is invalid'}), 401)
         return f(current_user, *args, **kwargs)
     return decorated
@@ -105,6 +103,7 @@ def user_login():
             token_validity = str(datetime.now() + timedelta(days=1))
             user_payload = {"mail_id":session["mail-id"], "created_at":str(datetime.now()), "valid_till":token_validity}
             new_token = jwt.encode(payload=user_payload, key=app.config['JWT_SECRET'])
+            
             return jsonify(token=new_token, validity=token_validity), 200
         else:
             return jsonify(message='Invalid credentials'), 401
@@ -146,7 +145,7 @@ def calculate_cal(current_user):
     Imperial formula for women
     BMR = (4.536 × weight in pounds) + (15.88 × height in inches) − (5 × age) − 161;"""
 
-    if session['gender'] == 'men':
+    if session['gender'] == 'male':
         if session['weight_type'] == 'metric':
             session['bmr'] = (10 * session['weight']) + (6.25 * float(session['height'])) - (5 * int(session['age'])) + 5
         elif session['weight_type'] == 'imperial':
@@ -154,7 +153,7 @@ def calculate_cal(current_user):
         else:
             log.debug(f'Error, {session["user"]} has entred weight_type as {session["weight_type"]} in calculate_cal')
             return jsonify(message='The weight_type entred was invalid'),401
-    elif session['gender'] == 'women':
+    elif session['gender'] == 'female':
         if session['weight_type'] == 'metric':
             session['bmr'] = (10 * session['weight']) + (6.25 * float(session['height'])) - (5 * int(session['age'])) - 161
         elif session['weight_type'] == 'imperial':

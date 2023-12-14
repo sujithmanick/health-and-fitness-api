@@ -57,5 +57,7 @@ def create_app():
         log.info('Imported endpoints')
     except ImportError:
         log.error('Imported endpoints failed')
+    except:
+        log.error('Failed DB and Routes')
 
     return app
