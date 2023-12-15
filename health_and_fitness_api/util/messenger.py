@@ -19,4 +19,4 @@ def send_verification_email(app,name,email,link):
         server.sendmail(sender,targets,msg.as_string())
         server.quit()
     except Exception as e:
-        print(e) 
+        pass
