@@ -2,7 +2,7 @@
     "MONGO_DATABASE_URI" : "",
     "APP_SECRET_KEY" : "",
     "SMTP_SSL_HOST" : "",
-    "SMTP_SSL_PORT" : ***,
+    "SMTP_SSL_PORT" : "",
     "MAIL_SENDER_ADDRESS" : "",
     "MAIL_SENDER_PASSWORD" : "",
     "APPLICATION_PROTOCOL" : "",
