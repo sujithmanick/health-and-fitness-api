@@ -1,0 +1,17 @@
+{
+    "MONGO_DATABASE_URI" : "",
+    "APP_SECRET_KEY" : "",
+    "SMTP_SSL_HOST" : "",
+    "SMTP_SSL_PORT" : "",
+    "MAIL_SENDER_ADDRESS" : "",
+    "MAIL_SENDER_PASSWORD" : "",
+    "APPLICATION_PROTOCOL" : "",
+    "APPLICATION_HOST" : "",
+    "APPLICATION_PORT" : "",
+    "JWT_SECRET" : "",
+    "ENCRYPTION_KEY" : "",
+    "JWT_HASH_ALGORITHM":"",
+    "LOGLEVEL":"INFO",
+    "LOGGER_FORMAT":"%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    "DEBUG" : false
+}
