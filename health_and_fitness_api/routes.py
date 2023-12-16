@@ -164,16 +164,20 @@ def calculate_cal(current_user):
     if session['gender'] == 'male':
         if session['weight_type'] == 'metric':
             session['bmr'] = (10 * session['weight']) + (6.25 * float(session['height'])) - (5 * int(session['age'])) + 5
+            session["calories"] = session["bmr"] * 1.375
         elif session['weight_type'] == 'imperial':
             session['bmr'] = (4.536 * session['weight']) + (15.88 * float(session['height'])) - (5 * int(session['age'])) + 5
+            session["calories"] = session["bmr"] * 1.375
         else:
             log.debug(f'Error, {session["user"]} has entred weight_type as {session["weight_type"]} in calculate_cal')
             return jsonify(message='The weight_type entred was invalid'),401
     elif session['gender'] == 'female':
         if session['weight_type'] == 'metric':
             session['bmr'] = (10 * session['weight']) + (6.25 * float(session['height'])) - (5 * int(session['age'])) - 161
+            session["calories"] = session["bmr"] * 1.375
         elif session['weight_type'] == 'imperial':
             session['bmr'] = (4.536 * session['weight']) + (15.88 * float(session['height'])) - (5 * int(session['age'])) - 161
+            session["calories"] = session["bmr"] * 1.375
         else:
             log.debug(f'Error, {session["user"]} has entred weight_type as {session["weight_type"]} in calculate_cal')
             return jsonify(message='The weight_type entred was invalid'),401
@@ -181,5 +185,7 @@ def calculate_cal(current_user):
         log.debug(f'Error, {session["user"]} has entred gender as {session["gender"]} in calculate_cal')
         return jsonify(message='The gender entred was invalid'),401
     
-    log.debug(f'/calculate_cal, Calculated BMR {session["bmr"]}')
-    return jsonify(bmr=session['bmr'],calculated_time=datetime.now()),200
+
+    log.debug(f'/calculate_cal, Calculated BMR {session["calories"]} of {session["user"]}')
+    log.debug(f'/calculate_cal, Calculated BMR {session["bmr"]} of {session["user"]}')
+    return jsonify(bmr=session['bmr'],calories = session["calories"],calculated_time=datetime.now()),200
