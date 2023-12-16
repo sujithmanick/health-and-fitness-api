@@ -152,13 +152,13 @@ def calculate_cal(current_user):
     """Metric formula for men
     BMR = (10 × weight in kg) + (6.25 × height in cm) − (5 × age in years) + 5
 
-    Imperial formula for men
+    The imperial formula for men
     BMR = (4.536 × weight in pounds) + (15.88 × height in inches) − (5 × age) + 5
 
     Metric formula for women
     BMR = (10 × weight in kg) + (6.25 × height in cm) − (5 × age in years) − 161
 
-    Imperial formula for women
+    The imperial formula for women
     BMR = (4.536 × weight in pounds) + (15.88 × height in inches) − (5 × age) − 161;"""
 
     if session['gender'] == 'male':
@@ -169,8 +169,8 @@ def calculate_cal(current_user):
             session['bmr'] = (4.536 * session['weight']) + (15.88 * float(session['height'])) - (5 * int(session['age'])) + 5
             session["calories"] = session["bmr"] * 1.375
         else:
-            log.debug(f'Error, {session["user"]} has entred weight_type as {session["weight_type"]} in calculate_cal')
-            return jsonify(message='The weight_type entred was invalid'),401
+            log.debug(f'Error, {session["user"]} has entered weight_type as {session["weight_type"]} in calculate_cal')
+            return jsonify(message='The weight_type entered was invalid'),401
     elif session['gender'] == 'female':
         if session['weight_type'] == 'metric':
             session['bmr'] = (10 * session['weight']) + (6.25 * float(session['height'])) - (5 * int(session['age'])) - 161
@@ -179,13 +179,13 @@ def calculate_cal(current_user):
             session['bmr'] = (4.536 * session['weight']) + (15.88 * float(session['height'])) - (5 * int(session['age'])) - 161
             session["calories"] = session["bmr"] * 1.375
         else:
-            log.debug(f'Error, {session["user"]} has entred weight_type as {session["weight_type"]} in calculate_cal')
-            return jsonify(message='The weight_type entred was invalid'),401
+            log.debug(f'Error, {session["user"]} has entered weight_type as {session["weight_type"]} in calculate_cal')
+            return jsonify(message='The weight_type entered was invalid'),401
     else:
-        log.debug(f'Error, {session["user"]} has entred gender as {session["gender"]} in calculate_cal')
-        return jsonify(message='The gender entred was invalid'),401
+        log.debug(f'Error, {session["user"]} has entered gender as {session["gender"]} in calculate_cal')
+        return jsonify(message='The gender entered was invalid'),401
     
 
-    log.debug(f'/calculate_cal, Calculated BMR {session["calories"]} of {session["user"]}')
+    log.debug(f'/calculate_cal, Calculated calories {session["calories"]} of {session["user"]}')
     log.debug(f'/calculate_cal, Calculated BMR {session["bmr"]} of {session["user"]}')
     return jsonify(bmr=session['bmr'],calories = session["calories"],calculated_time=datetime.now()),200
